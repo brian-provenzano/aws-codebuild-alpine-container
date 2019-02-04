@@ -2,7 +2,6 @@ remove=0.1
 old_version := $(shell echo "scale=2; ${version} - ${remove}" | bc)
 build:
 	@docker build -t warpigg/ami-awscodebuild-alpine:$(version) .
-	echo $(old_version)
 tag:
 	@docker tag warpigg/ami-awscodebuild-alpine:$(version) 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(version)
 push:
