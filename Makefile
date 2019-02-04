@@ -1,7 +1,10 @@
 build:
 	@docker build -t warpigg/ami-awscodebuild-alpine:$(version) .
-run:
-	@docker run --name=ami-awscodebuild-alpine -d warpigg/ami-awscodebuild-alpine:$(version) --entry-point "/bin/sh"
+tag:
+	@docker tag warpigg/ami-awscodebuild-alpine:$(version) 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(version)
+push:
+	@aws ecr get-login --no-include-email --profile hostingdemo-fulladmin | bash
+	@docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(version)
 start:
 	@docker container start ami-awscodebuild-alpine
 stop:
@@ -17,7 +20,3 @@ prune:
 clean:	stop
 	@docker container rm ami-awscodebuild-alpine
 cleanall: clean prune
-buildpushreg:
-	@aws ecr get-login --no-include-email --profile hostingdemo-fulladmin | bash
-	@docker build -t $(uri):$(version) .
-	@docker push $(uri)
