@@ -9,6 +9,8 @@ RUN apk add --no-cache python3 wget git jq && \
     pip3 install awscli  && \ 
     pip3 install requests
 RUN wget https://raw.githubusercontent.com/brian-provenzano/hashicorp-get/master/hashicorp-get.py -O /bin/hashicorp-get.py && chmod +x /bin/hashicorp-get.py
-RUN hashicorp-get.py packer latest /bin/ -y -q 
+RUN hashicorp-get.py packer latest /bin/ -y -q
+ADD cleanup-ami.sh /bin/cleanup-ami.sh
+RUN chmod +x /bin/cleanup-ami.sh
 ADD get-ami.sh /bin/get-ami.sh
 RUN chmod +x /bin/get-ami.sh
