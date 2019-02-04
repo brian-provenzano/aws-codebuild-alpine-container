@@ -5,7 +5,7 @@
 #
 
 AMI_COUNT=$(aws ec2 describe-images --owners self --filters 'Name=tag:Purpose,Values=web' --query 'Images[*].{ID:ImageId}' --output text | wc -l)
-if [[$AMICOUNT -gt 1]]; then
+if [ "$AMI_COUNT" -gt 1 ]; then
     aws ec2 describe-images --owners self --filters 'Name=tag:Purpose,Values=web' --query 'sort_by(Images, &CreationDate)[0].[ImageId]' --output text > /root/ami-delete.txt
     aws ec2 describe-images --image-ids $(cat /root/ami-delete.txt) | jq -r '.Images[].BlockDeviceMappings[0].Ebs.SnapshotId' > /root/snapami-delete.txt
     echo -e "Following are the snapshots associated with ami: $(cat /root/snapami-delete.txt) \n "
