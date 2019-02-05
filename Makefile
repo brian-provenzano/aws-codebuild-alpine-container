@@ -1,4 +1,4 @@
-remove=0.1
+remove=0.2
 old_version := $(shell echo "scale=2; ${version} - ${remove}" | bc)
 build:
 	@docker build -t warpigg/ami-awscodebuild-alpine:$(version) .
@@ -7,7 +7,10 @@ tag:
 push:
 	@aws ecr get-login --no-include-email --profile hostingdemo-fulladmin | bash
 	@docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(version)
+	@echo "new version: ${version}"
+	@echo "old version to delete: ${old_version}"
 	aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=$(old_version) --profile hostingdemo-fulladmin
+	aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${version}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}" --profile hostingdemo-fulladmin
 start:
 	@docker container start ami-awscodebuild-alpine
 stop:
