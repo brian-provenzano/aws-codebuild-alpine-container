@@ -1,0 +1,7 @@
+{
+    "type": "LINUX_CONTAINER",
+    "image": "680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:2.0",
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "environmentVariables": [],
+    "privilegedMode": false
+}
