@@ -1,7 +1,16 @@
 #!/bin/sh
 #
 # Get all current custom AMIs; delete oldest + all associated snapshots
-# since we are running this after each build and started with 1 image, should always retain 2
+# since we are running this after each build and started with 1 image, should always retain 2 AMIs in the registry
+#
+# Usage:
+# cleanup-ami.sh 
+#
+# Notes:
+#
+# Author:
+# BJP - 1/19
+#
 #
 
 AMI_COUNT=$(aws ec2 describe-images --owners self --filters 'Name=tag:Purpose,Values=web' --query 'Images[*].{ID:ImageId}' --output text | wc -l)
