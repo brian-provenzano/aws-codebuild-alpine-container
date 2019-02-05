@@ -11,6 +11,7 @@ push:
 	@echo "old version to delete: ${old_version}"
 	aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=$(old_version) --profile hostingdemo-fulladmin
 	aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${version}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}" --profile hostingdemo-fulladmin
+buildpush: build tag push
 start:
 	@docker container start ami-awscodebuild-alpine
 stop:
@@ -28,4 +29,3 @@ clean:	stop
 cleanall: clean prune
 test:
 	@echo $(old_version)
-
