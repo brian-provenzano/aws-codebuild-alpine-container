@@ -6,6 +6,7 @@ version: 0.1
 phases:
   pre_build:
     commands:
+      - apt install bc
       - VERSION=$(cat version.txt)
       - REMOVE=0.2
       - OLDVERSION=$(echo "scale=2; ${version} - ${remove}" | bc)
