@@ -13,9 +13,7 @@ phases:
     commands:
     #VERSION is passed into the build as a env var in codebuild
       - echo ${VERSION}
-      - VERSION=${VERSION}
-      - echo ${VERSION}
-      - REMOVE=0.2
+      - export REMOVE=0.2
       - echo ${REMOVE}
       - OLDVERSION=$(echo "scale=2; ${VERSION} - ${REMOVE}" | bc)
       - echo ${OLDVERSION}
