@@ -6,7 +6,6 @@ version: 0.2
 phases:
   install:
     commands:
-      - cat /etc/os-release
       - apt update 
       - apt install bc -y
   pre_build:
@@ -31,6 +30,6 @@ phases:
       - docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}
       - echo "delete old ECR images"
       - aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=${OLDVERSION}
-      #- echo "update the Build_AMI codebuild project to the latest image"
-      #- |
-      #  aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}"
+      - echo "update the Build_AMI codebuild project to the latest image"
+      - |
+        aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}"
