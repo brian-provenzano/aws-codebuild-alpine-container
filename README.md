@@ -14,8 +14,8 @@ Note: See [Codebuild buildspec.yaml](https://github.com/brian-provenzano/aws-cod
 
 ### Policies
 The following policies need to be added to the codebuild service role:
- - Policy to allow codebuild access to ECR []()
- - Policy to allow codebuild update-project permissions []()
+ - Policy to allow codebuild access to ECR [ECR policy](https://github.com/brian-provenzano/aws-codebuild-alpine-container/blob/master/codebuild-ecr-policy2.json)
+ - Policy to allow codebuild update-project permissions [Codebuild update policy](https://github.com/brian-provenzano/aws-codebuild-alpine-container/blob/master/codebuild-allow-update-proj.json)
 
 ### Update
 Now using AWS codebuild to build the docker image
