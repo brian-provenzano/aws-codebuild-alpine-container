@@ -12,6 +12,14 @@ Basic Alpine image build environment needed to create AWS AMIs per this POC proj
 
 Note: See [Codebuild buildspec.yaml](https://github.com/brian-provenzano/aws-codebuild-packer-poc/blob/master/buildspec.yaml) for usage details
 
+### Policies
+The following policies need to be added to the codebuild service role:
+ - Policy to allow codebuild access to ECR []()
+ - Policy to allow codebuild update-project permissions []()
+
+### Update
+Now using AWS codebuild to build the docker image
+
 ### Thanks 
 Hashicorp
 AWS
