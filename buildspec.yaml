@@ -11,9 +11,11 @@ phases:
       - apt install bc -y
   pre_build:
     commands:
-      - VERSION=$(cat version.txt)
+    #VERSION is passed into the build as a env var in codebuild
+      - echo ${VERSION}
       - REMOVE=0.2
-      - OLDVERSION=$(echo "scale=2; ${version} - ${remove}" | bc)
+      - OLDVERSION=$(echo "scale=2; ${VERSION} - ${REMOVE}" | bc)
+      - echo ${OLDVERSION}
   build:
     commands:
       - echo "Building image using Alpine:latest base"
