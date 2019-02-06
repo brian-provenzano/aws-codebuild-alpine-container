@@ -1,5 +1,5 @@
 ---
-version: 0.1
+version: 0.2
 # 
 # Build Custom alpine container for use with codebuild project https://github.com/brian-provenzano/aws-codebuild-packer-poc
 # 
@@ -11,9 +11,9 @@ phases:
       - apt install bc -y
   pre_build:
     commands:
-    #VERSION,REMOVE is passed into the build as a env var in codebuild
+    #VERSION is passed into the build as a env var in codebuild
       - echo ${VERSION}
-      # - export REMOVE=0.2
+      - REMOVE=0.2
       - echo ${REMOVE}
       - OLDVERSION=$(echo "scale=2; ${VERSION} - ${REMOVE}" | bc)
       - echo ${OLDVERSION}
