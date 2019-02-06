@@ -1,0 +1,27 @@
+---
+version: 0.1
+# 
+# Build Custom alpine container for use with codebuild project https://github.com/brian-provenzano/aws-codebuild-packer-poc
+# 
+phases:
+  pre_build:
+    commands:
+      - VERSION=$(cat version.txt)
+      - REMOVE=0.2
+      - OLDVERSION=$(echo "scale=2; ${version} - ${remove}" | bc)
+  build:
+    commands:
+      - echo "Building image using Alpine:latest base"
+      - docker build -t brianprovenzano/ami-awscodebuild-alpine:${VERSION} .
+      - echo "Docker build completed on $(date)"
+  post_build:
+    commands:
+      - echo "Tag the image"
+      - docker tag brianprovenzano/ami-awscodebuild-alpine:${VERSION} 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}
+      - echo "Login to the AWS ECR and push the image"
+      - aws ecr get-login --no-include-email | bash
+      - echo "delete old ECR images"
+      - aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=${OLDVERSION}
+      - echo "update the Build_AMI codebuild project to the latest image"
+      - |
+        aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}"
