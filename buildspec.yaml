@@ -27,6 +27,7 @@ phases:
       - docker tag brianprovenzano/ami-awscodebuild-alpine:${VERSION} 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}
       - echo "Login to the AWS ECR and push the image"
       - aws ecr get-login --no-include-email | bash
+      - docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(VERSION)
       - echo "delete old ECR images"
       - aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=${OLDVERSION}
       - echo "update the Build_AMI codebuild project to the latest image"
