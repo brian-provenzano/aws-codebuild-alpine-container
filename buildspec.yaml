@@ -13,6 +13,7 @@ phases:
     commands:
     #VERSION is passed into the build as a env var in codebuild
       - echo ${VERSION}
+      - VERSION=${VERSION}
       - REMOVE=0.2
       - OLDVERSION=$(echo "scale=2; ${VERSION} - ${REMOVE}" | bc)
       - echo ${OLDVERSION}
@@ -27,9 +28,9 @@ phases:
       - docker tag brianprovenzano/ami-awscodebuild-alpine:${VERSION} 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}
       - echo "Login to the AWS ECR and push the image"
       - aws ecr get-login --no-include-email | bash
-      - docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:$(VERSION)
+      - docker push 680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}
       - echo "delete old ECR images"
       - aws ecr batch-delete-image --repository-name brian-provenzano --image-ids imageTag=${OLDVERSION}
-      - echo "update the Build_AMI codebuild project to the latest image"
-      - |
-        aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}"
+      #- echo "update the Build_AMI codebuild project to the latest image"
+      #- |
+      #  aws codebuild update-project --name Build_AMI --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"680991002562.dkr.ecr.us-west-2.amazonaws.com/brian-provenzano:${VERSION}\",\"computeType\": \"BUILD_GENERAL1_SMALL\",\"environmentVariables\": [],\"privilegedMode\": false}"
